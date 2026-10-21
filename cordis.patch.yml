@@ -1,0 +1,19 @@
+# 为什么用 id 定向覆盖而不是 insert：
+# base bundle 自己也有一行 `id: hmr`（@deepseek-ai/dsh-hmr），它把 `config.root`
+# 显式设成 `[]` —— 按 dsh-hmr 的 README，`root: []` 意味着「只保留显式配置监听，
+# 不监听模块源码」，所以保存插件文件不会重载。这里用**同 id 覆盖**那一行。
+#
+# 两个必须注意的语义（来自 Loader patch 方言）：
+# 1. `config` 是**整体替换**，不做深合并 —— 所以没写的字段会退回 schema 默认值：
+#    `ignored` 默认 ["**/node_modules", "**/.*", "cache", "data"]（正好排除 dsh-desktop
+#    那个 266M 的 node_modules），`debounce` 默认 100ms。这是我们想要的，故不重述。
+# 2. `name` 在这里是**断言**（确认目标是这一行），不是改名，必须写对。
+#
+# base 选父目录、root 用 ["."]：一次覆盖所有插件目录，以后新建插件包
+# 不需要再改配置、也就不用再重启一次宿主。
+- id: hmr
+  name: '@deepseek-ai/dsh-hmr'
+  config:
+    base: /home/liufei/data/claude-workspace/dsh
+    root:
+      - .

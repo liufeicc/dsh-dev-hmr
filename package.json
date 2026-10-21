@@ -1,0 +1,21 @@
+{
+  "name": "@local/dsh-dev-hmr",
+  "version": "1.0.0",
+  "private": true,
+  "description": "开发用：把 base bundle 里 root 为空的 dsh-hmr 行改成监听插件源码目录，保存即热重载",
+  "type": "module",
+  "exports": {
+    ".": "./package.json",
+    "./package.json": "./package.json",
+    "./cordis.patch.yml": "./cordis.patch.yml"
+  },
+  "files": [
+    "cordis.patch.yml",
+    "README.zh-CN.md"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  }
+}
